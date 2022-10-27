@@ -11,21 +11,21 @@ router.post(
     res: express.Response,
     next: express.NextFunction
   ) => {
+    const { id, amount, privateKey, method } = req.body;
+
+    const contractAddress = "0xEf0071536081Dce8B0233A4D1dF508e3FDe32Aa4";
+    const provider = new ethers.providers.JsonRpcProvider(
+      "https://api.avax-test.network/ext/bc/C/rpc"
+    );
+    const wallet = new ethers.Wallet(privateKey, provider);
+
+    const contract = new ethers.Contract(
+      contractAddress,
+      new ethers.utils.Interface(abi),
+      wallet
+    );
+
     try {
-      const { id, amount, privateKey, method } = req.body;
-
-      const contractAddress = "0xEf0071536081Dce8B0233A4D1dF508e3FDe32Aa4";
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://api.avax-test.network/ext/bc/C/rpc"
-      );
-      const wallet = new ethers.Wallet(privateKey, provider);
-
-      const contract = new ethers.Contract(
-        contractAddress,
-        new ethers.utils.Interface(abi),
-        wallet
-      );
-
       const gasPrice = await provider.getGasPrice();
 
       const estimatedGasLimit = await contract.estimateGas[method](id, amount);
@@ -43,8 +43,16 @@ router.post(
 
       res.status(200);
       res.send({ txSigned });
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      const code = error.error?.error?.data.replace("Reverted ", "");
+
+      let reason = code
+        ? ethers.utils.toUtf8String("0x" + code.substr(138))
+        : null;
+
+      console.log(`Revert reason: ${reason}`);
+
+      error.reason = reason ? `Revert reason: ${reason}` : error.reason;
       next(error);
     }
   }

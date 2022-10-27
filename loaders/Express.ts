@@ -9,12 +9,12 @@ class ExpressLoader {
   constructor(config: { port: number }) {
     const app = express();
 
-    // Setup error handling, this must be after all other middleware
-    app.use(ExpressLoader.errorHandler);
-
     app.use(express.json());
 
     routes(app);
+
+    // Setup error handling
+    app.use(ExpressLoader.errorHandler);
 
     // Start application
     this.server = app.listen(config.port, () => {

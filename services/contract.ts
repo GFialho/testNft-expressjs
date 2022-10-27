@@ -35,9 +35,24 @@ export class TestNFTContract {
   }
 
   async send(signedTransaction: string) {
-    this._verify(signedTransaction);
+    try {
+      this._verify(signedTransaction);
 
-    const submittedTx = await this.provider.sendTransaction(signedTransaction);
-    return submittedTx;
+      const submittedTx = await this.provider.sendTransaction(
+        signedTransaction
+      );
+      return submittedTx;
+    } catch (error: any) {
+      const code = error.error?.error?.data?.replace("Reverted ", "");
+
+      let reason = code
+        ? ethers.utils.toUtf8String("0x" + code.substr(138))
+        : null;
+
+      console.log(`Revert reason: ${reason}`);
+
+      error.reason = reason ? `Revert reason: ${reason}` : error.reason;
+      throw error;
+    }
   }
 }
