@@ -41,8 +41,6 @@ router.post(
 
       const txSigned = await wallet.signTransaction(txUnsigned);
 
-      console.log({ txSigned, txUnsigned });
-
       res.status(200);
       res.send({ txSigned });
     } catch (error) {

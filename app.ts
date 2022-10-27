@@ -22,7 +22,7 @@ app.use(
     res.json({
       error: {
         name: err.code,
-        message: err.reason,
+        message: err.reason || err.message,
       },
     });
   }
