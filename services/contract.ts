@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
-const abi = require("../../contracts/testNFT/abi.json");
+const abi = require("../config/testNFT/abi.json");
 
-class TestNFTContract {
+export class TestNFTContract {
   provider: ethers.providers.JsonRpcProvider;
   interface: ethers.utils.Interface;
   constructor() {
@@ -41,5 +41,3 @@ class TestNFTContract {
     return submittedTx;
   }
 }
-
-module.exports = { TestNFTContract };

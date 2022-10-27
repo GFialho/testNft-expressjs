@@ -1,7 +1,7 @@
 import express from "express";
 
 const router = express.Router();
-const { TestNFTContract } = require("../../contracts/testNFT/contract");
+import { TestNFTContract } from "../../services/contract";
 
 router.post(
   "/",

@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint '**/*.js' --ignore-pattern node_modules/ --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx ts-node app.ts"
+    "start": "npx ts-node index.ts"
   },
   "author": "Gabriel Fialho",
   "license": "ISC",

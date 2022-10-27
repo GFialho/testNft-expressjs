@@ -1,6 +1,6 @@
 import express from "express";
 import { ethers } from "ethers";
-const abi = require("../../contracts/testNFT/abi.json");
+const abi = require("../../config/testNFT/abi.json");
 
 const router = express.Router();
 
